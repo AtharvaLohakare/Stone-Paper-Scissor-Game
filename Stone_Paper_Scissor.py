@@ -1,11 +1,11 @@
-# Stone = -1
+# rock = -1
 # paper = 0
 # Scissor = 1
 
 import random
 
 print("""
-Stone
+rock
     _______
 ---'   ____)
       (_____)
@@ -34,17 +34,46 @@ winning_message = ("Great Job!","You Defeated the Computer!" ,"Awesome!","Victor
 losing_messages = ("Computer wins!","Better luck next time!","You lost this round!","Try again!")
 
 
-print("----------------------Stone Paper Scissor----------------------")
+print("----------------------Rock Paper Scissor Game----------------------")
 
-choices = {"stone" : -1 , "paper" : 0 , "scissor" : 1}
-rev_choices = {-1 : "stone" , 0 : "paper" , 1 : "scissor"}
+
+
+with open("UserName.txt") as f:
+    user_name = f.read()
+
+if user_name == "":
+    user_name = input("Enter Your Name :")
+    with open("UserName.txt" ,"w") as f:
+        f.write(user_name)
+
+
+print(f"Welcome! {user_name}\nMay the best move win\n")
+
+choices = {"rock" : -1 , "paper" : 0 , "scissor" : 1}
+rev_choices = {-1 : "rock" , 0 : "paper" , 1 : "scissor"}
 
 wins = 0
 losses = 0
 draws = 0
 
-
 while True:
+    print("1. First to 3 wins")
+    print("2. First to 5 wins")
+    choice_mode = input("Select Mode :")
+    if choice_mode == "1":
+        mode = 3
+        break
+    elif choice_mode == "2":
+        mode = 5
+        break
+    else:
+        print("Invalid input")
+
+round_no = 1
+
+while wins < mode and losses < mode:
+   
+    print(f"\n----- Round {round_no} -----")
 
     computer_choice = random.choice((-1,0,1))
     user = input("Enter Your Choice :")
@@ -54,10 +83,11 @@ while True:
         print("Invalid Input")
         continue
     else:
+        round_no += 1
         user_choice = choices[user]
 
         print(f"Computer Choice is {rev_choices[computer_choice]}")
-        print(f"Your Choice is {rev_choices[user_choice]}")
+        # print(f"Your Choice is {rev_choices[user_choice]}")
 
         if user_choice == computer_choice :
             print("Match is Draw\n")
@@ -85,16 +115,17 @@ while True:
             else :
                 print("Incorrect Input")
             
-            
-    # score
-    play_again = input("Play again? (Yes/No)").lower()
-    if play_again != "yes":
-        print("\n------ FINALSCORE ------")
-        print(f"Wins   : {wins}")
-        print(f"Losses : {losses}")
-        print(f"Draws  : {draws}")
-        print("------------------------")
-        print("Thanks for Playing")
-        break
+print("\n----- GAME OVER -----")
 
-    
+if wins == mode:
+    print(f"Congratulations {user_name}! You are the Winner 🏆")
+else:
+    print("Computer Wins! Better Luck Next Time 😄")
+
+
+print("\n------ FINALSCORE ------")
+print(f"{user_name} : {wins}")
+print(f"Computer : {losses}")
+print(f"Draws : {draws}")
+print("------------------------")
+print("Thanks for Playing")
